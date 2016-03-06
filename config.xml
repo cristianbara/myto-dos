@@ -1,4 +1,4 @@
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="io.cristianbara.github.myToDos" version="1.0.0">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="io.cristianbara.github.myToDos" version="35.0.0">
   <name>My to-dos</name>
   <description>An easy to use to do list app. Add new items. Edit existing iterms, or mark them done. Auto-saves all changes.</description>
   <author href="http://cristianbara.github.io" email="cristian.dan.bara@gmail.com">CB web dev.</author>
