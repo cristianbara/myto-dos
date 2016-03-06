@@ -51,6 +51,15 @@ angular.module('myToDoApp', ['contenteditable', 'ngStorage', 'ngAnimate'])
        
     }
     
+      $scope.markUndone = function(index) {
+        // change the done flag for the index item
+        $scope.model[index].done = false;
+        
+        // save the new $scope model to local storage
+        $localStorage.myToDos = $scope.model;
+       
+    }
+    
     $scope.orderList = function () {
             $scope.model = orderBy($scope.model, 'done', false);
             // save the new $scope model to local storage
