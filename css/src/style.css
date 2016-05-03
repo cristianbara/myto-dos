@@ -2,12 +2,12 @@
   font-family: 'Material Icons';
   font-style: normal;
   font-weight: 400;
-  src: url(MaterialIcons-Regular.eot); /* For IE6-8 */
+  src: url(../../assets/fonts/material-icons/MaterialIcons-Regular.eot); /* For IE6-8 */
   src: local('Material Icons'),
        local('MaterialIcons-Regular'),
-       url(MaterialIcons-Regular.woff2) format('woff2'),
-       url(MaterialIcons-Regular.woff) format('woff'),
-       url(MaterialIcons-Regular.ttf) format('truetype');
+       url(../../assets/fonts/material-icons/MaterialIcons-Regular.woff2) format('woff2'),
+       url(../../assets/fonts/material-icons/MaterialIcons-Regular.woff) format('woff'),
+       url(../../assets/fonts/material-icons/MaterialIcons-Regular.ttf) format('truetype');
 }
 
 .material-icons {
@@ -110,7 +110,7 @@ html,
         height: 50px;
         min-height: 40px;
         color: white;
-        /* background-image: url("assets/app-title.jpg"); */
+        /* background-image: url("../../assets/app-title.jpg"); */
         background-position: center;
         background-repeat: no-repeat;
         background-size: auto;
@@ -236,14 +236,14 @@ html,
     }
     
     .cross {
-        background-image: url(assets/item-cross.png);
+        background-image: url(../../assets/item-cross.png);
         background-repeat: no-repeat;
         background-size: auto;
         background-position: center center;
     }
     
     .check {
-        background-image: url(assets/item-check.png);
+        background-image: url(../../assets/item-check.png);
         background-repeat: no-repeat;
         background-size: auto;
         background-position: center center;
@@ -413,7 +413,7 @@ box-shadow: 16px -2px 45px -9px rgba(0,0,0,0.5);
     left: 5px;
     width: 50px;
     height: 60px;
-    background-image: url(assets/by-CB-logo-square-bluegray.png);
+    background-image: url(../../assets/by-CB-logo-square-bluegray.png);
     background-position: center;
     background-repeat: no-repeat;
     background-size: contain;

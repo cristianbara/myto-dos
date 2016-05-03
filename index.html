@@ -6,19 +6,19 @@
     <meta name="viewport" content="width=device-width">
     <meta name="viewport" content="initial-scale=1.0">
     <title>My to-dos app</title>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script> -->
-    <link href="style.css" rel="stylesheet" type="text/css">
+    
+    <link href="css/src/style.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="cordova.js"></script>
-    <script src="angular.min.js"></script>
-    <script src="angular-contenteditable.js"></script>
-    <script src="angular-animate.js"></script>
-    <script src="ngStorage.js"></script>
-    <script src="app.js"></script>
+    <script src="js/lib/angular.min.js"></script>
+    <script src="js/lib/angular-contenteditable.js"></script>
+    <script src="js/lib/angular-animate.js"></script>
+    <script src="js/lib/ngStorage.js"></script>
+    
 </head>
 
 <body ng-controller="myToDoAppController">
-    <!-- <div class="gwd-div-bkij" id="background"></div> -->
-    <!-- <div class="gwd-div-1stp" id="phone"> -->
+    <script src="js/src/app.js"></script>
+    
     <div class="gwd-div-1vyq" id="title"> My to-dos </div>
     <img src="icon.png" class="titleIcon" ng-click="toggleLeftMenu()">
     <div id="sliding-menu" class="sliding-menu" ng-if="showLeftMenu">
