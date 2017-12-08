@@ -95,7 +95,7 @@
                     <!-- To-do card -->
                     <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto" ng-repeat="todo in model" ng-if="todo.show" ng-cloak>
                         <div class="card" ng-class="todo.done? 'done-card':''">
-                           <div class="align-middle" style="width: 40px; height: 40px; position: absolute; z-index: 5; background: white; border-radius: 50%;" ng-click="removeToDo($index)">
+                           <div class="align-middle" style="width: 40px; height: 40px; position: absolute; z-index: 5; background: transparent; border-radius: 50%;" ng-click="removeToDo($index)">
                                     <i class="now-ui-icons ui-1_simple-remove" style="color: red; padding: 13px;"></i>
                             </div>
                             <div class="card-body">
