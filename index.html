@@ -1,69 +1,252 @@
 <!DOCTYPE html>
-<html ng-app="myToDoApp">
+<html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <meta name="viewport" content="initial-scale=1.0">
-    <title>My to-dos app</title>
-    
-    <link href="css/src/style.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="cordova.js"></script>
-    <script src="js/lib/angular.min.js"></script>
-    <script src="js/lib/angular-contenteditable.js"></script>
-    <script src="js/lib/angular-animate.js"></script>
-    <script src="js/lib/ngStorage.js"></script>
-    
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title></title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+    <!-- CSS Files -->
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../assets/css/now-ui-kit.css?v=1.1.0" rel="stylesheet" />
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link href="../assets/css/demo.css" rel="stylesheet" />
 </head>
 
-<body ng-controller="myToDoAppController">
-    <script src="js/src/app.js"></script>
-    
-    <div class="gwd-div-1vyq" id="title"> My to-dos </div>
-    <img src="icon.png" class="titleIcon" ng-click="toggleLeftMenu()">
-    <div id="sliding-menu" class="sliding-menu" ng-if="showLeftMenu">
-        <div id="top-spacer" class="menu-item" style="margin-bottom: 30px;">
-            <!-- leave empty -->
-        </div>
-        <div id="reset-list" class="menu-item" ng-click="resetList()">
-            <i class="material-icons md-light">autorenew</i>
-        </div>
-        <div id="delete-list" class="menu-item" ng-click="deleteList()">
-            <i class="material-icons md-light">delete</i>
-        </div>
-        <div id="delete-list" class="menu-item" ng-click="orderList()">
-            <i class="material-icons md-light">format_list_bulleted</i>
-        </div>
-
-        <a id="logo" href="https://cristianbara.github.io" target="_blank" onClick="openURL('https://cristianbara.github.io')" class="logo-link">
-        </a>
-
-    </div>
-    <div class="gwd-div-1n6y" id="body">
-        <div ng-repeat="item in model" class="gwd-div-1g9m animation-list" ng-class="{done: item.done == true}" ng-switch="item.done">
-            <div class="gwd-div-text" style="" contenteditable="true" ng-model="item.text" strip-br="true" strip-tags="true" select-non-editable="true">
-                <!-- {{item.text}} -->Something
+<body class="template-page sidebar-collapse" style="background: #efefef; ">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top" style="background: white">
+        <div class="container">
+            <div class="navbar-translate">
+                <a class="navbar-brand" style="color: black">
+                    My to-dos
+                </a>
+                <a class="navbar-brand" style="color: #f96332">
+                    Today
+                </a>
+                <button class="btn btn-primary btn-icon  btn-icon-mini btn-round btn-simple" data-toggle="modal" data-target="#newToDoModal"> 
+                <i class="now-ui-icons ui-1_simple-add"></i>
+                </button>
+                <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-bar bar1 bg-primary"></span>
+                    <span class="navbar-toggler-bar bar2 bg-primary"></span>
+                    <span class="navbar-toggler-bar bar3 bg-primary"></span>
+                </button>
             </div>
-            <div class="life-type" ng-if="item.type == 'life'"></div>
-            <div class="work-type" ng-if="item.type == 'work'"></div>
-            <div class="gwd-div-pjjz check" ng-switch-when="false" ng-click="markAsDone($index)"></div>
-            <div class="gwd-div-pjjz cross done-btn" ng-switch-when="true" ng-click="removeToDo($index)"></div>
-            <div class="gwd-div-pjjz-r" ng-switch-when="true" ng-click="markUndone($index)">
-                    <i class="material-icons">replay</i>
+            <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pablo">
+                            <i class="now-ui-icons sport_trophy"></i>
+                            <p>Today</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#pablo">
+                            <i class="now-ui-icons transportation_air-baloon"></i>
+                            <p>Yesterday</p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="now-ui-icons education_atom"></i>
+                            <p>Since forever</p>
+                        </a>
+                    </li>
+                    <li class="nav-item" style="border-top: 1px solid white">
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">
+                            <i class="now-ui-icons ui-2_time-alarm"></i>
+                            <p>Pomodoro Timer</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="wrapper" style="margin-top: 20px">
+        <div class="section section-tabs">
+            <div class="container">
+                <div class="row">
+                   <!-- To-do card -->
+                    <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- To Do text -->
+                                <div class="text-center">
+                                    <h5>Something super important</h5>
+                                    <p>Describing the super important thing I have to do, in detail so I don't loose track of the real important stuff.</p>
+                                    <!--
+                                    <textarea class="form-control" placeholder="An optional detailed description" rows="3"></textarea>
+                                    -->
+                                </div>
+                                <div class="text-center" style="margin-top: 20px">
+                                    <i class="now-ui-icons ui-1_simple-remove"></i> &nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" name="checkbox" class="bootstrap-switch" style="margin-left: 0" />
+                                    <i class="now-ui-icons ui-1_check"></i>
+                                </div>  
+                            </div>
+                            <div class="card-footer d-flex justify-content-between align-items-center"  >
+                               <div style="font-size: 0.7em "> CREATED <span>8/12/2016 10:30</span></div>
+                               <div class="align-middle" style="color: orangered;">
+                                   <span>3</span> <i class="now-ui-icons ui-2_time-alarm" style="vertical-align: middle;font-size: 0.9em;"></i>
+                               </div>
+                           </div>
+                        </div>
+                    </div>
+                    <!-- To-do card -->
+                    <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- To Do text -->
+                                <div class="text-center">
+                                    <h5>Something I should do</h5>
+                                    <p>Well, no pomodors for this one, but it still would be nice to do this before the end of the day.</p>
+                                    <!--
+                                    <textarea class="form-control" placeholder="An optional detailed description" rows="3"></textarea>
+                                    -->
+                                </div>
+                                <div class="text-center" style="margin-top: 20px">
+                                    <i class="now-ui-icons ui-1_simple-remove"></i> &nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" name="checkbox" class="bootstrap-switch" style="margin-left: 0" />
+                                    <i class="now-ui-icons ui-1_check"></i>
+                                </div>  
+                            </div>
+                            <div class="card-footer d-flex justify-content-between align-items-center"  >
+                               <div style="font-size: 0.7em "> CREATED <span>8/12/2016 9:43</span></div>
+                               <div class="align-middle" style="color: orangered;">
+                                   <i class="now-ui-icons transportation_air-baloon" style="vertical-align: middle;font-size: 0.9em;"></i>
+                               </div>
+                           </div>
+                        </div>
+                    </div>
+                    <!-- To-do card -->
+                    <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto">
+                        <div class="card" style="border-left: 1px solid green">
+                            <div class="card-body">
+                                <!-- To Do text -->
+                                <div class="text-center">
+                                    <h5>Something I did</h5>
+                                    <p>Describing the super important thing I did, in detail so I don't loose track of the real important stuff.</p>
+                                    <!--
+                                    <textarea class="form-control" placeholder="An optional detailed description" rows="3"></textarea>
+                                    -->
+                                </div>
+                                <div class="text-center" style="margin-top: 20px">
+                                    <i class="now-ui-icons ui-1_simple-remove"></i> &nbsp;&nbsp;&nbsp;
+                                    <input type="checkbox" name="checkbox" class="bootstrap-switch" style="margin-left: 0" />
+                                    <i class="now-ui-icons ui-1_check"></i>
+                                </div>  
+                            </div>
+                            <div class="card-footer d-flex justify-content-between align-items-center"  >
+                               <div style="font-size: 0.7em "> CREATED <span>8/12/2016 9:16</span></div>
+                               <div class="align-middle" style="color: green;">
+                                   <span>1</span> <i class="now-ui-icons ui-2_time-alarm" style="vertical-align: middle;font-size: 0.9em;"></i>
+                               </div>
+                           </div>
+                        </div>
+                    </div>
+                    
+                    
                 </div>
+            </div>
+        </div>
+        <div class="section section-nucleo-icons">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <h4 class="title">Pomodoro timer</h4>
+                            <p class="description">
+                               A timer to break down work into intervals, traditionally 25 minutes in length, separated by short 5 minute breaks.</p>
+                            <!-- <div class="nucleo-container">
+							<img src="assets/img/nucleo.svg" alt="">
+						</div> -->
+                            <button class="btn btn-primary btn-round">Start</button>
+                            <button class="btn btn-simple btn-round">Stop</button>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <div class="icons-container description">
+                                <i class="now-ui-icons ui-1_send"></i>
+                                <i class="now-ui-icons ui-2_like"></i>
+                                <i class="now-ui-icons transportation_air-baloon"></i>
+                                <i class="now-ui-icons text_bold"></i>
+                                <i class="now-ui-icons tech_headphones"></i>
+                                <i class="now-ui-icons emoticons_satisfied"></i>
+                                <i class="now-ui-icons shopping_cart-simple"></i>
+                                <i class="now-ui-icons objects_spaceship"></i>
+                                <i class="now-ui-icons media-2_note-03"></i>
+                                <i class="now-ui-icons ui-2_favourite-28"></i>
+                                <i class="now-ui-icons design_palette"></i>
+                                <i class="now-ui-icons clothes_tie-bow"></i>
+                                <i class="now-ui-icons location_pin"></i>
+                                <i class="now-ui-icons objects_key-25"></i>
+                                <i class="now-ui-icons travel_istanbul"></i>
+                            </div>
+                       </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+    <!-- Pomodoro timer -->
+    <div class="fixed-bottom" style="background: #fff; height: 50px; border-top: 1px solid #d9d9d9">
+        <div class="container">
+            <div class="progress-container progress-primary">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+                        <span class="progress-value">10 min left</span>
+                    </div>
+                </div>
+                <span class="progress-badge">Pomodoro Timer</span>
+            </div>
         </div>
     </div>
-    <div class="gwd-div-1n6h" id="menu-body" ng-if="showMenu">
-        <div class="gwd-div-cb5l-life" id="buttonLife" ng-click="addToDoLife()">
-            <img src="assets/ic_add_white_24px.svg" class="gwd-icon-add"> <b style="color: black; font-weight: 400; font-size: 26px; vertical-align: middle; padding-right: 50px;"> life to-do </b>
-        </div>
-        <div class="gwd-div-cb5l-work" id="buttonWork" ng-click="addToDoWork()">
-            <img src="assets/ic_add_white_24px.svg" class="gwd-icon-add"> <b style="color: black; font-weight: 400; font-size: 26px; vertical-align: middle; padding-right: 50px;"> work to-do </b>
-        </div>
+    <!-- Modal Core -->
+<div class="modal fade" id="newToDoModal" tabindex="-1" role="dialog" aria-labelledby="newToDoModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <p class="modal-title" id="myModalLabel">New to-do item</p>
     </div>
-    <div class="gwd-div-cb5l noselect" ng-class="{closeMenu: showMenu == true}" id="button" ng-click="btnMenu()"><img src="assets/ic_add_white_24px.svg" class="gwd-icon-add">
+    <div class="modal-body">
+    <textarea class="form-control" placeholder="Title" rows="1"></textarea>
+    <br>
+    <textarea class="form-control" placeholder="Description details (optional)" rows="4"></textarea>
+    <br>
+    <div class="input-group">
+        <input type="text" class="form-control" placeholder="No. of pomodoros">
+        <span class="input-group-addon">
+            <i class="now-ui-icons ui-2_time-alarm"></i>
+        </span>
     </div>
-    <!-- </div> -->
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default btn-simple" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary btn-simple" data-dismiss="modal">Save</button>
+    </div>
+    </div>
+  </div>
+</div>
 </body>
+<!--   Core JS Files   -->
+<script src="../assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="../assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="../assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+<script src="../assets/js/plugins/bootstrap-switch.js"></script>
+<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+<script src="../assets/js/plugins/nouislider.min.js" type="text/javascript"></script>
+<!--  Plugin for the DatePicker, full documentation here: https://github.com/uxsolutions/bootstrap-datepicker -->
+<script src="../assets/js/plugins/bootstrap-datepicker.js" type="text/javascript"></script>
+<!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
+<script src="../assets/js/now-ui-kit.js?v=1.1.0" type="text/javascript"></script>
 
 </html>
