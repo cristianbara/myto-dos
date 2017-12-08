@@ -14,35 +14,24 @@
 var model = [
     {
         type: 'life',
-        text: 'A done task',
-        done: true
+        title: 'Something super important',
+        description: 'Describing the super important thing I have to do, in detail so I don\'t loose track of the real important stuff.',
+        done: true,
+        show: true,
+        pomodoros: 10,
+        createdDate: 1512767393799
     },
     {
-        type: 'work',
-        text: 'An active task',
-        done: false
+        type: 'worf',
+        title: 'Something I should do',
+        description: 'Well, no pomodors for this one, but it still would be nice to do this before the end of the day.',
+        done: false,
+        show: true,
+        pomodoros: 3,
+        createdDate: 1512767393799
     },
 
 ];
-
-
-
-/*
- * Function which opens a url.
- * @param {string} url - the URL string
- * @return {undefined}
- */
-var openURL = function (url) {
-    if (device.platform === 'Android') {
-        navigator.app.loadUrl(url, {
-            openExternal: true
-        });
-    } else {
-        window.open(url, '_system');
-    }
-};
-
-
 
 
 /*
@@ -50,86 +39,93 @@ var openURL = function (url) {
  */
 //var showMenu = false;
 angular.module('myToDoApp', ['contenteditable', 'ngStorage', 'ngAnimate'])
-    .controller('myToDoAppController', function ($scope, $filter, $localStorage) {
+    .controller('myToDoAppController', function ($scope, $filter, $localStorage, $timeout) {
 
-
-
-        /*
-         * @param {boolean} $scope.showMenu - flag which trigger the display/hiding of the floating action menu
-         */
-        $scope.showMenu = false;
-
-
-
-        /*
-         * Loads data model from local storage is it exisits. 
-         */
-        if ($localStorage.myToDos) {
-
-            $scope.model = $localStorage.myToDos;
-
-        } else {
-
-            $scope.model = model;
+        $scope.pomodoro = {
+            time: 0,
+            started: false,
+            isOnBreak: false,
+            pomodoroTime: 25,
+            pomodoroBreak: 5
+        };
+        $scope.pageName = '';
+        $scope.showPomodoro = false;
+        $scope.newItem = {
+            show: true,
+            title: '',
+            description: '',
+            done: false,
+            pomodoros: 0,
+            createdDate: ''
         };
 
+        function isToday(dateString) {
+            var thatDay = new Date(dateString);
+            console.log(dateString, thatDay);
+            var today = new Date();
+            if (thatDay.getDate() === today.getDate() && thatDay.getMonth() === today.getMonth() && thatDay.getFullYear() === today.getFullYear()) {
+                return true;
+            };
+            return false;
+        }
 
-
-        /*
-         * orderBy is a function reference to the $filter service. 
-         */
+        function isYesterday(dateString) {
+            var thatDay = new Date(dateString);
+            var yesterday = new Date();
+            yesterday = new Date(yesterday.setDate(yesterday.getDate() - 1));
+            if (thatDay.getDate() === yesterday.getDate() && thatDay.getMonth() === yesterday.getMonth() && thatDay.getFullYear() === yesterday.getFullYear()) {
+                return true;
+            };
+            return false;
+        }
+        $scope.showToDoList = function (nr) {
+            $scope.showPomodoro = false;
+            switch (nr) {
+                case 1: // today
+                    $scope.pageName = 'today';
+                    for (var i = 0; i < $scope.model.length; i++) {
+                        if (isToday($scope.model[i].createdDate)) {
+                            $scope.model[i].show = true;
+                        } else {
+                            $scope.model[i].show = false;
+                        }
+                    };
+                    break;
+                case 0: // yesterday
+                    $scope.pageName = 'yesterday';
+                    for (var i = 0; i < $scope.model.length; i++) {
+                        if (isYesterday($scope.model[i].createdDate)) {
+                            $scope.model[i].show = true;
+                        } else {
+                            $scope.model[i].show = false;
+                        }
+                    };
+                    break;
+                case -1: // since forever :)
+                    $scope.pageName = 'since forever';
+                    for (var i = 0; i < $scope.model.length; i++) {
+                        $scope.model[i].show = true;
+                    };
+                    break;
+                default:
+                    break;
+            }
+        }
+        $scope.displayPomodoro = function () {
+                $scope.showPomodoro = true;
+                $scope.pageName = 'pomodoro'
+            }
+            /*
+             * orderBy is a function reference to the $filter service. 
+             */
         var orderBy = $filter('orderBy');
 
 
 
-        /*
-         * @param {boolean} $scope.showMenu - flag which trigger the display/hiding of the left hand side menu
-         */
-        $scope.showLeftMenu = false;
-
-
-
-        /*
-         * Function which toggles the left menu
-         * @return {undefined}
-         */
-        $scope.toggleLeftMenu = function () {
-            $scope.showLeftMenu = !$scope.showLeftMenu;
-        };
-
-
-
-        /*
-         * Function which marks an item as done.
-         * @param {object} item - a @model item
-         * @return {undefined}
-         */
-        $scope.markAsDone = function (index) {
-            // change the done flag for the index item
-            $scope.model[index].done = true;
-
+        $scope.save = function () {
             // save the new $scope model to local storage
             $localStorage.myToDos = $scope.model;
-
-        };
-
-
-
-        /*
-         * Function which marks an item as not done.
-         * @param {object} item - a @model item
-         * @return {undefined}
-         */
-        $scope.markUndone = function (index) {
-            // change the done flag for the index item
-            $scope.model[index].done = false;
-
-            // save the new $scope model to local storage
-            $localStorage.myToDos = $scope.model;
-
-        };
-
-
+        }
 
         /*
          * Function which orders a data @model according to the @done parameter and then save the result in the local storage.
@@ -159,38 +155,17 @@ angular.module('myToDoApp', ['contenteditable', 'ngStorage', 'ngAnimate'])
         };
 
 
-
-        /*
-         * Function which toggles the floating action menu.
-         * @return {undefined}
-         */
-        $scope.btnMenu = function () {
-            if ($scope.showMenu == true) {
-                $scope.showMenu = false;
-                // roatate icon towards +
-                // show menu items
-            } else {
-                $scope.showMenu = true;
-                // rotate icon towards x
-
-            }
-        };
-
-
-
         /*
          * Function which adds a default life item to the @model.
          * @return {undefined}
          */
-        $scope.addToDoLife = function () {
-            // make a new, empty item
-            var newItem = {
-                    type: 'life',
-                    text: '',
-                    done: false
-                }
-                // push the item to the $scope model list
-            $scope.model.splice(0, 0, newItem);
+        $scope.addToDo = function (newItem) {
+            var newItemCopy = angular.copy(newItem);
+
+            //newItemCopy.createdDate = now.getDate() + "/" + (now.getMonth() + 1) + "/" + now.getFullYear() +"   "+ (now.getHours()<10?'0':'') + +now.getHours() + ":" + (now.getMinutes()<10?'0':'') + + now.getMinutes();
+            newItemCopy.createdDate = Date.now();
+            // push the item to the $scope model list
+            $scope.model.splice(0, 0, newItemCopy);
 
             // save the new $scope model to local storage
             $localStorage.myToDos = $scope.model;
@@ -199,33 +174,21 @@ angular.module('myToDoApp', ['contenteditable', 'ngStorage', 'ngAnimate'])
             $scope.showMenu = false;
 
         };
-
-
-
 
         /*
-         * Function which adds a default work item to the @model.
+         * Function which cancels a todo item creation.
          * @return {undefined}
          */
-        $scope.addToDoWork = function () {
-            // make a new, empty item
-            var newItem = {
-                    type: 'work',
-                    text: '',
-                    done: false
-                }
-                // push the item to the $scope model list
-            $scope.model.splice(0, 0, newItem);
-
-            // save the new $scope model to local storage
-            $localStorage.myToDos = $scope.model;
-
-            //hide menu
-            $scope.showMenu = false;
-
+        $scope.resetToDo = function () {
+            $scope.newItem = {
+                title: '',
+                description: '',
+                show: true,
+                done: false,
+                pomodoros: 0,
+                createdDate: ''
+            }
         };
-
-
 
 
         /*
@@ -239,9 +202,6 @@ angular.module('myToDoApp', ['contenteditable', 'ngStorage', 'ngAnimate'])
             $localStorage.myToDos = $scope.model;
         };
 
-
-
-
         /*
          * Function which resets the @model, turning all items to done = false.
          * @return {undefined}
@@ -254,4 +214,44 @@ angular.module('myToDoApp', ['contenteditable', 'ngStorage', 'ngAnimate'])
             // save the new $scope model to local storage
             $localStorage.myToDos = $scope.model;
         };
+
+        var runPomodoro = function () {
+            $timeout(function () {
+                    if ($scope.pomodoro.started && $scope.pomodoro.time <= 1500){
+                        $scope.pomodoro.time++;
+                        console.log($scope.pomodoro.time)
+                        runPomodoro();
+                    } else {
+                       $scope.stopPomodoro(); 
+                    }
+                }, 1000);
+        };
+        
+        $scope.startPomodoro = function() {
+            $scope.pomodoro.started = true;
+            runPomodoro();
+        }
+
+        $scope.stopPomodoro = function () {
+            $scope.pomodoro.time = 0;
+            $scope.pomodoro.started = false;
+        };
+
+        /*
+         * Loads data model from local storage is it exisits. 
+         */
+        if ($localStorage.myToDos) {
+
+            $scope.model = $localStorage.myToDos;
+
+        } else {
+
+            $scope.model = model;
+        };
+
+        $scope.showToDoList(1);
+
+        $scope.$watch('model', function () {
+            $scope.save();
+        });
     });
