@@ -174,7 +174,7 @@
             <div class="progress-container progress-primary">
                 <div class="progress">
                     <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="500" aria-valuemin="0" aria-valuemax="1500" style="width: {{(pomodoro.time*100/1500) | number : 0}}%;">
-                        <span ng-if="pomodoro.started" class="progress-value">{{(1500 - pomodoro.time)/60 | number : 0}} MIN : {{(1500 - pomodoro.time) % 60 | number : 0}} SEC LEFT</span>
+                        <span ng-if="pomodoro.started" class="progress-value">{{Math.floor((1500 - pomodoro.time)/60) | number : 0}} MIN : {{(1500 - pomodoro.time) % 60 | number : 0}} SEC LEFT</span>
                         <span ng-if="!pomodoro.started" class="progress-value" style="color: black">TIMER STOPED</span>
                     </div>
                 </div>

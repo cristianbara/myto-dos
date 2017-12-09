@@ -41,6 +41,7 @@ var model = [
 angular.module('myToDoApp', ['contenteditable', 'ngStorage', 'ngAnimate'])
     .controller('myToDoAppController', function ($scope, $filter, $localStorage, $timeout) {
 
+        $scope.Math = window.Math;
         $scope.pomodoro = {
             time: 0,
             started: false,
