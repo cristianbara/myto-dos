@@ -91,6 +91,7 @@ angular.module('myToDoApp', ['contenteditable', 'ngStorage', 'ngAnimate'])
                             $scope.model[i].show = false;
                         }
                     };
+                    $localStorage.defaultView = 1;
                     break;
                 case 0: // yesterday
                     $scope.pageName = 'yesterday';
@@ -101,12 +102,14 @@ angular.module('myToDoApp', ['contenteditable', 'ngStorage', 'ngAnimate'])
                             $scope.model[i].show = false;
                         }
                     };
+                    $localStorage.defaultView = 0;
                     break;
                 case -1: // since forever :)
                     $scope.pageName = 'since forever';
                     for (var i = 0; i < $scope.model.length; i++) {
                         $scope.model[i].show = true;
                     };
+                    $localStorage.defaultView = -1
                     break;
                 default:
                     break;
@@ -249,8 +252,14 @@ angular.module('myToDoApp', ['contenteditable', 'ngStorage', 'ngAnimate'])
 
             $scope.model = model;
         };
+    
+        if($localStorage.defaultView !== undefined) {
+            $scope.showToDoList($localStorage.defaultView);
+        } else {
+            $scope.showToDoList(1);
+        }
 
-        $scope.showToDoList(1);
+        
 
         $scope.$watch('model', function () {
             $scope.save();
